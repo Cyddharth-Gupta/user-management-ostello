@@ -1,18 +1,24 @@
 const dbConfig = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  port: process.env.DB_PORT,
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+//   host: dbConfig.HOST,
+//   port: process.env.DB_PORT,
   dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true, // Enable SSL for Heroku
+      rejectUnauthorized: false, // Disabling SSL verification is not recommended for production, but this may be necessary for some Heroku configurations
+    },
+  },
 //   operatorsAliases: false,
 
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle
-  }
+//   pool: {
+//     max: dbConfig.pool.max,
+//     min: dbConfig.pool.min,
+//     acquire: dbConfig.pool.acquire,
+//     idle: dbConfig.pool.idle
+//   }
 });
 
 const db = {};
