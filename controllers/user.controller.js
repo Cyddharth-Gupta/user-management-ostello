@@ -174,8 +174,6 @@ exports.updateUser = async (req, res) => {
   
       // Ensure that the user making the request is the owner of the account (or has appropriate permissions)
       if (user.username !== req.user.username) {
-        console.log(user.username)
-        console.log(req.user.username)
 
         return res.status(403).json({ error: 'Unauthorized access.' });
       }
@@ -183,7 +181,7 @@ exports.updateUser = async (req, res) => {
       // Delete the user from the database
       await user.destroy();
   
-      return res.status(204).send(); // Respond with 204 No Content for successful deletion
+      return res.status(204).json({ message: 'User deleted successfully', user});
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: 'Internal server error' });
